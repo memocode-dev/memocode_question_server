@@ -15,8 +15,8 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("메모 API")
-                        .description("메모의 정보를 가져올 수 있음")
+                        .title("QNA API")
+                        .description("QNA의 정보를 가져올 수 있음")
                         .version("1.0.0"))
                 .components(new Components()
                         .addSecuritySchemes("bearer-key",

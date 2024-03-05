@@ -1,6 +1,7 @@
-package dev.memocode.question_server.domain.qna;
+package dev.memocode.question_server.domain.tag;
 
 import dev.memocode.question_server.domain.base.base.entity.BaseEntity;
+import dev.memocode.question_server.domain.question.entity.Question;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;

@@ -1,4 +1,4 @@
-package dev.memocode.question_server.domain.qna;
+package dev.memocode.question_server.domain.question.entity;
 
 import dev.memocode.question_server.domain.base.base.entity.AggregateRoot;
 import dev.memocode.question_server.domain.external.external.user.entity.Author;
@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @SuperBuilder
 @NoArgsConstructor(access = PROTECTED)
-@Table(name = "articles")
+@Table(name = "questions")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Question extends AggregateRoot {
 
@@ -27,6 +28,10 @@ public class Question extends AggregateRoot {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "affinity")
+    @Builder.Default
+    private Integer affinity = 0;
 
     @ManyToOne(fetch = LAZY)
     private Author author;

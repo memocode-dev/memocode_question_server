@@ -1,4 +1,4 @@
-package dev.memocode.question_server.domain.qna;
+package dev.memocode.question_server.domain.tag;
 
 import dev.memocode.question_server.domain.base.base.entity.AggregateRoot;
 import jakarta.persistence.Column;
