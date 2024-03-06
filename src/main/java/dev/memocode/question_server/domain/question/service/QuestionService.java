@@ -6,17 +6,22 @@ import dev.memocode.question_server.domain.question.entity.Question;
 import dev.memocode.question_server.domain.question.repository.QuestionRepository;
 import dev.memocode.question_server.dto.request.QuestionCreateDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final AuthorService authorService;
 
     public Question createQuestion(QuestionCreateDto questionCreateDto) {
-        Author author = authorService.findByIdElseThrow(questionCreateDto.getAccountId());
+
+        log.info("USER = {}", questionCreateDto.getAccountId());
+
+        Author author = authorService.findByAccountIdElseThrow(questionCreateDto.getAccountId());
         Question question = Question.builder()
                 .title(questionCreateDto.getTitle())
                 .content(questionCreateDto.getContent())

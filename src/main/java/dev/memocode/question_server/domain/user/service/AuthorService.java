@@ -8,14 +8,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static dev.memocode.question_server.exception.GlobalErrorCode.ACCOUNT_ID_CLAIM_NAME;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
-
     private final AuthorRepository authorRepository;
 
-    public Author findByIdElseThrow(UUID userId) {
-        return authorRepository.findById(userId)
-                .orElseThrow(() -> new GlobalException(null));
+    public Author findByAccountIdElseThrow(UUID userId) {
+        return authorRepository.findByAccountId(userId)
+                .orElseThrow(() -> new GlobalException(ACCOUNT_ID_CLAIM_NAME));
     }
 }
