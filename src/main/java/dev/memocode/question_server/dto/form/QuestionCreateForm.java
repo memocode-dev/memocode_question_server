@@ -1,10 +1,14 @@
 package dev.memocode.question_server.dto.form;
 
+import dev.memocode.question_server.dto.request.TagCreateDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
@@ -19,5 +23,5 @@ public class QuestionCreateForm {
     @Schema(requiredMode = REQUIRED)
     private String content;
 
-    // List<tagDto> 추가하기
+    Set<TagCreateDto> tags = new HashSet<>();
 }

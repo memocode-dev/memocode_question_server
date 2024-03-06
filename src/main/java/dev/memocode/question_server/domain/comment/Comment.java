@@ -1,7 +1,7 @@
 package dev.memocode.question_server.domain.comment;
 
 import dev.memocode.question_server.domain.base.base.entity.AggregateRoot;
-import dev.memocode.question_server.domain.external.external.user.entity.Author;
+import dev.memocode.question_server.domain.user.entity.Author;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

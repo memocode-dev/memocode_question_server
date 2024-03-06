@@ -1,4 +1,4 @@
-package dev.memocode.question_server.domain.external.external.user.entity;
+package dev.memocode.question_server.domain.user.entity;
 
 import dev.memocode.question_server.domain.base.base.entity.AggregateRoot;
 import jakarta.persistence.Column;
