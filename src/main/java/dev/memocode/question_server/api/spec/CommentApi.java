@@ -26,5 +26,5 @@ public interface CommentApi {
     ResponseEntity<CommentUpdateDto> updateComment(Long commentId, CommentUpdateForm form, Jwt jwt);
 
     @Operation(summary = "QUESTION에 해당하는 COMMENT 조회")
-    ResponseEntity<CommentsDto> findQuestionComment(Long commentId);
+    ResponseEntity<CommentsDto> findQuestionComment(Long questionId);
 }

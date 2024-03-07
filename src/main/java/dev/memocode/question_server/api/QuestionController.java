@@ -14,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.UUID;
@@ -32,6 +29,9 @@ public class QuestionController implements QuestionApi {
     private final QuestionCreateDtoMapper questionCreateDtoMapper;
     private static final String ACCOUNT_ID_CLAIM_NAME = "account_id";
 
+    /**
+     * QNA 글 생성
+     */
     @PostMapping
     public ResponseEntity<String> createQuestion(@RequestBody QuestionCreateForm form,@AuthenticationPrincipal Jwt jwt) {
         QuestionCreateDto questionCreateDto = questionCreateDtoMapper.fromQuestionCreateFormAndAccountId(form,
@@ -40,24 +40,34 @@ public class QuestionController implements QuestionApi {
         UUID questionId = questionUseCase.createQuestion(questionCreateDto);
         return ResponseEntity.created(URI.create(questionId.toString())).body(questionId.toString());
     }
-
-    @Override
-    public ResponseEntity<Void> deleteQuestion(Long questionId, Jwt jwt) {
+    /**
+     * QNA 글 삭제
+     */
+    @DeleteMapping("{questionId}")
+    public ResponseEntity<Void> deleteQuestion(@PathVariable Long questionId, @AuthenticationPrincipal Jwt jwt) {
         return null;
     }
-
-    @Override
-    public ResponseEntity<QuestionUpdateDto> updateQuestion(Long questionId, QuestionUpdateForm form, Jwt jwt) {
+    /**
+     * QNA 글 수정
+     */
+    @PatchMapping("/{questionId}")
+    public ResponseEntity<QuestionUpdateDto> updateQuestion(@PathVariable Long questionId, @RequestBody QuestionUpdateForm form, @AuthenticationPrincipal Jwt jwt) {
         return null;
     }
-
-    @Override
-    public ResponseEntity<QuestionDetailDto> findQuestion(Long questionId) {
+    /**
+     * QNA 글 단일 조회
+     */
+    @GetMapping("/{questionId}")
+    public ResponseEntity<QuestionDetailDto> findQuestion(@PathVariable Long questionId) {
         return null;
     }
-
-    @Override
-    public ResponseEntity<QuestionsDto> findAllQuestion() {
+    /**
+     * QNA 글 전체 조회
+     */
+    @GetMapping
+    public ResponseEntity<QuestionsDto> findAllQuestion(@AuthenticationPrincipal Jwt jwt,
+                                                        @RequestParam(name = "page", defaultValue = "0") int page,
+                                                        @RequestParam(name = "size", defaultValue = "10") int size) {
         return null;
     }
 }
