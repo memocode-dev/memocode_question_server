@@ -2,9 +2,12 @@ package dev.memocode.question_server.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.oauth2.core.authorization.OAuth2AuthorizationManagers.hasScope;
 
 @Configuration
 public class SecurityConfig {
@@ -14,7 +17,10 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(a -> a
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET,"/questions/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/questions").access(hasScope("write:question"))
+                        .requestMatchers(HttpMethod.GET,"/questions").permitAll()
+                        .anyRequest().denyAll()
                 )
                 .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()));
 
