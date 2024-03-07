@@ -1,6 +1,6 @@
 package dev.memocode.question_server.dto.response;
 
-import dev.memocode.question_server.dto.form.QuestionUpdateForm;
+import dev.memocode.question_server.dto.form.CommentUpdateForm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,8 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuestionUpdateDto {
-    private QuestionUpdateForm questionUpdateForm;
+public class CommentUpdateDto {
+
+    private CommentUpdateForm commentUpdateForm;
     private Instant updatedAt;
 }

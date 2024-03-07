@@ -1,18 +1,23 @@
 package dev.memocode.question_server.dto.response;
 
-import dev.memocode.question_server.dto.form.QuestionUpdateForm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuestionUpdateDto {
-    private QuestionUpdateForm questionUpdateForm;
+public class CommentDetailDto {
+
+    private String content;
+    private UUID authorId;
+    private Long questionId;
+    private Long parentCommentId;
+    private Instant createdAt;
     private Instant updatedAt;
 }
