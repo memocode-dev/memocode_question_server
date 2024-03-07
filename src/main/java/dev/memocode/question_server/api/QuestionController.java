@@ -1,8 +1,13 @@
 package dev.memocode.question_server.api;
 
+import dev.memocode.question_server.api.spec.QuestionApi;
 import dev.memocode.question_server.domain.usecase.QuestionUseCase;
 import dev.memocode.question_server.dto.form.QuestionCreateForm;
+import dev.memocode.question_server.dto.form.QuestionUpdateForm;
 import dev.memocode.question_server.dto.request.QuestionCreateDto;
+import dev.memocode.question_server.dto.response.QuestionDetailDto;
+import dev.memocode.question_server.dto.response.QuestionUpdateDto;
+import dev.memocode.question_server.dto.response.QuestionsDto;
 import dev.memocode.question_server.mapper.QuestionCreateDtoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/questions")
-public class QuestionController {
+public class QuestionController implements QuestionApi {
 
     private final QuestionUseCase questionUseCase;
     private final QuestionCreateDtoMapper questionCreateDtoMapper;
@@ -34,5 +39,25 @@ public class QuestionController {
 
         UUID questionId = questionUseCase.createQuestion(questionCreateDto);
         return ResponseEntity.created(URI.create(questionId.toString())).body(questionId.toString());
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteQuestion(Long questionId, Jwt jwt) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<QuestionUpdateDto> updateQuestion(Long questionId, QuestionUpdateForm form, Jwt jwt) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<QuestionDetailDto> findQuestion(Long questionId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<QuestionsDto> findAllQuestion() {
+        return null;
     }
 }

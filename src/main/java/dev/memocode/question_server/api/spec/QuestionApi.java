@@ -12,21 +12,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 @Tag(name = "questions", description = "QNA API")
-@SecurityRequirement(name = "bearer-key")
 public interface QuestionApi {
 
     @Operation(summary = "QNA 생성")
+    @SecurityRequirement(name = "bearer-key")
     ResponseEntity<String> createQuestion(QuestionCreateForm form, Jwt jwt);
 
     @Operation(summary = "QNA 삭제")
+    @SecurityRequirement(name = "bearer-key")
     ResponseEntity<Void> deleteQuestion(Long questionId, Jwt jwt);
 
     @Operation(summary = "QNA 수정")
+    @SecurityRequirement(name = "bearer-key")
     ResponseEntity<QuestionUpdateDto> updateQuestion(Long questionId, QuestionUpdateForm form, Jwt jwt);
 
     @Operation(summary = "QNA 단일 조회")
-    ResponseEntity<QuestionDetailDto> findQuestion(Long questionId, Jwt jwt);
+    ResponseEntity<QuestionDetailDto> findQuestion(Long questionId);
 
     @Operation(summary = "QNA 전체 조회")
-    ResponseEntity<QuestionsDto> findAllQuestion(Jwt jwt);
+    ResponseEntity<QuestionsDto> findAllQuestion();
 }
