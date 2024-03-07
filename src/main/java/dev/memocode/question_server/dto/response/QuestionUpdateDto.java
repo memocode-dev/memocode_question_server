@@ -7,12 +7,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class QuestionUpdateDto {
-    private QuestionUpdateForm questionUpdateForm;
-    private Instant updatedAt;
+    private Long questionId;
+    private UUID accountId;
+    private String title;
+    private String content;
 }
