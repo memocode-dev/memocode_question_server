@@ -30,5 +30,5 @@ public interface QuestionApi {
     ResponseEntity<QuestionDetailDto> findQuestion(Long questionId);
 
     @Operation(summary = "QNA 전체 조회")
-    ResponseEntity<QuestionsDto> findAllQuestion();
+    ResponseEntity<QuestionsDto> findAllQuestion(Jwt jwt, int page, int size);
 }
