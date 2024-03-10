@@ -1,10 +1,10 @@
 package dev.memocode.question_server.api;
 
 import dev.memocode.question_server.api.spec.CommentApi;
-import dev.memocode.question_server.dto.form.CommentCreateForm;
-import dev.memocode.question_server.dto.form.CommentUpdateForm;
-import dev.memocode.question_server.dto.response.CommentUpdateDto;
-import dev.memocode.question_server.dto.response.CommentsDto;
+import dev.memocode.question_server.domain.comment.dto.form.CommentCreateForm;
+import dev.memocode.question_server.domain.comment.dto.form.CommentUpdateForm;
+import dev.memocode.question_server.domain.comment.dto.response.CommentUpdateDto;
+import dev.memocode.question_server.domain.comment.dto.response.CommentsDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

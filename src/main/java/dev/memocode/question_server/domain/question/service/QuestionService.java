@@ -1,10 +1,10 @@
 package dev.memocode.question_server.domain.question.service;
 
-import dev.memocode.question_server.domain.user.entity.Author;
-import dev.memocode.question_server.domain.user.service.AuthorService;
+import dev.memocode.question_server.domain.external.author.entity.Author;
+import dev.memocode.question_server.domain.external.author.service.AuthorService;
 import dev.memocode.question_server.domain.question.entity.Question;
 import dev.memocode.question_server.domain.question.repository.QuestionRepository;
-import dev.memocode.question_server.dto.request.QuestionCreateDto;
+import dev.memocode.question_server.domain.question.dto.request.QuestionCreateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

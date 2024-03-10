@@ -1,7 +1,6 @@
 package dev.memocode.question_server.domain.usecase;
 
-import dev.memocode.question_server.dto.request.QuestionCreateDto;
-import org.springframework.transaction.annotation.Transactional;
+import dev.memocode.question_server.domain.question.dto.request.QuestionCreateDto;
 
 import java.util.UUID;
 

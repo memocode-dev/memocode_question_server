@@ -1,9 +1,9 @@
 package dev.memocode.question_server.api.spec;
 
-import dev.memocode.question_server.dto.form.CommentCreateForm;
-import dev.memocode.question_server.dto.form.CommentUpdateForm;
-import dev.memocode.question_server.dto.response.CommentUpdateDto;
-import dev.memocode.question_server.dto.response.CommentsDto;
+import dev.memocode.question_server.domain.comment.dto.form.CommentCreateForm;
+import dev.memocode.question_server.domain.comment.dto.form.CommentUpdateForm;
+import dev.memocode.question_server.domain.comment.dto.response.CommentUpdateDto;
+import dev.memocode.question_server.domain.comment.dto.response.CommentsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

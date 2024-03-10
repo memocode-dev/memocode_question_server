@@ -1,10 +1,10 @@
 package dev.memocode.question_server.api.spec;
 
-import dev.memocode.question_server.dto.form.QuestionCreateForm;
-import dev.memocode.question_server.dto.form.QuestionUpdateForm;
-import dev.memocode.question_server.dto.response.QuestionUpdateDto;
-import dev.memocode.question_server.dto.response.QuestionDetailDto;
-import dev.memocode.question_server.dto.response.QuestionsDto;
+import dev.memocode.question_server.domain.question.dto.form.QuestionCreateForm;
+import dev.memocode.question_server.domain.question.dto.form.QuestionUpdateForm;
+import dev.memocode.question_server.domain.question.dto.response.QuestionUpdateDto;
+import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
+import dev.memocode.question_server.domain.question.dto.response.QuestionsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
