@@ -1,6 +1,7 @@
 package dev.memocode.question_server.api;
 
 import dev.memocode.question_server.api.spec.QuestionApi;
+import dev.memocode.question_server.domain.question.dto.request.QuestionDeleteDto;
 import dev.memocode.question_server.domain.usecase.QuestionUseCase;
 import dev.memocode.question_server.domain.question.dto.form.QuestionCreateForm;
 import dev.memocode.question_server.domain.question.dto.form.QuestionUpdateForm;
@@ -8,7 +9,7 @@ import dev.memocode.question_server.domain.question.dto.request.QuestionCreateDt
 import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionUpdateDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionsDto;
-import dev.memocode.question_server.domain.question.mapper.QuestionCreateDtoMapper;
+import dev.memocode.question_server.domain.question.mapper.QuestionDtoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ import java.util.UUID;
 public class QuestionController implements QuestionApi {
 
     private final QuestionUseCase questionUseCase;
-    private final QuestionCreateDtoMapper questionCreateDtoMapper;
+    private final QuestionDtoMapper questionDtoMapper;
     private static final String ACCOUNT_ID_CLAIM_NAME = "account_id";
 
     /**
@@ -34,18 +35,22 @@ public class QuestionController implements QuestionApi {
      */
     @PostMapping
     public ResponseEntity<String> createQuestion(@RequestBody QuestionCreateForm form,@AuthenticationPrincipal Jwt jwt) {
-        QuestionCreateDto questionCreateDto = questionCreateDtoMapper.fromQuestionCreateFormAndAccountId(form,
+        QuestionCreateDto questionCreateDto = questionDtoMapper.fromQuestionCreateFormAndAccountId(form,
                 UUID.fromString(jwt.getClaim(ACCOUNT_ID_CLAIM_NAME)));
 
-        UUID questionId = questionUseCase.createQuestion(questionCreateDto);
-        return ResponseEntity.created(URI.create(questionId.toString())).body(questionId.toString());
+        UUID createdQuestion = questionUseCase.createQuestion(questionCreateDto);
+        return ResponseEntity.created(URI.create(createdQuestion.toString())).body(createdQuestion.toString());
     }
     /**
      * QNA 글 삭제
      */
     @DeleteMapping("{questionId}")
-    public ResponseEntity<Void> deleteQuestion(@PathVariable Long questionId, @AuthenticationPrincipal Jwt jwt) {
-        return null;
+    public ResponseEntity<Void> deleteQuestion(@PathVariable UUID questionId, @AuthenticationPrincipal Jwt jwt) {
+        QuestionDeleteDto questionDeleteDto = questionDtoMapper.fromQuestionDeleteFormAndAccountId(questionId,
+                UUID.fromString(jwt.getClaim(ACCOUNT_ID_CLAIM_NAME)));
+
+        questionUseCase.deleteQuestion(questionDeleteDto);
+        return ResponseEntity.ok().build();
     }
     /**
      * QNA 글 수정

@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Instant;
+
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -35,4 +37,9 @@ public class Question extends AggregateRoot {
 
     @ManyToOne(fetch = LAZY)
     private Author author;
+
+    public void delete() {
+        this.deleted = true;
+        this.deletedAt = Instant.now();
+    }
 }
