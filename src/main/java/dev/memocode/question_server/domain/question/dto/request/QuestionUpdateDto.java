@@ -1,4 +1,4 @@
-package dev.memocode.question_server.domain.question.dto.response;
+package dev.memocode.question_server.domain.question.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class QuestionUpdateDto {
-    private Long questionId;
+    private UUID questionId;
     private UUID accountId;
     private String title;
     private String content;

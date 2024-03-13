@@ -42,4 +42,9 @@ public class Question extends AggregateRoot {
         this.deleted = true;
         this.deletedAt = Instant.now();
     }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

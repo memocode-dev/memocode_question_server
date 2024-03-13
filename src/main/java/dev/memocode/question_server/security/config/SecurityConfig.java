@@ -19,6 +19,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(HttpMethod.GET,"/questions/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/questions").access(hasScope("write:question"))
+                        .requestMatchers(HttpMethod.PATCH,"/questions/**").access(hasScope("write:question"))
+                        .requestMatchers(HttpMethod.DELETE,"/questions/**").access(hasScope("write:question"))
                         .requestMatchers(HttpMethod.GET,"/questions").permitAll()
                         .anyRequest().denyAll()
                 )

@@ -7,7 +7,7 @@ import dev.memocode.question_server.domain.question.dto.form.QuestionCreateForm;
 import dev.memocode.question_server.domain.question.dto.form.QuestionUpdateForm;
 import dev.memocode.question_server.domain.question.dto.request.QuestionCreateDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
-import dev.memocode.question_server.domain.question.dto.response.QuestionUpdateDto;
+import dev.memocode.question_server.domain.question.dto.request.QuestionUpdateDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionsDto;
 import dev.memocode.question_server.domain.question.mapper.QuestionDtoMapper;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +56,13 @@ public class QuestionController implements QuestionApi {
      * QNA 글 수정
      */
     @PatchMapping("/{questionId}")
-    public ResponseEntity<QuestionUpdateDto> updateQuestion(@PathVariable Long questionId, @RequestBody QuestionUpdateForm form, @AuthenticationPrincipal Jwt jwt) {
-        return null;
+    public ResponseEntity<String> updateQuestion(@PathVariable UUID questionId, @RequestBody QuestionUpdateForm form, @AuthenticationPrincipal Jwt jwt) {
+        QuestionUpdateDto questionUpdateDto = questionDtoMapper.fromQuestionUpdateFormAndAccountId(questionId,
+                form,
+                UUID.fromString(jwt.getClaim(ACCOUNT_ID_CLAIM_NAME)));
+
+        UUID updatedQuestion = questionUseCase.updateQuestion(questionUpdateDto);
+        return ResponseEntity.ok().body(updatedQuestion.toString());
     }
     /**
      * QNA 글 단일 조회

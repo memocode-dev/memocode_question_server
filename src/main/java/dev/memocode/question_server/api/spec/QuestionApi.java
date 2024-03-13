@@ -2,7 +2,7 @@ package dev.memocode.question_server.api.spec;
 
 import dev.memocode.question_server.domain.question.dto.form.QuestionCreateForm;
 import dev.memocode.question_server.domain.question.dto.form.QuestionUpdateForm;
-import dev.memocode.question_server.domain.question.dto.response.QuestionUpdateDto;
+import dev.memocode.question_server.domain.question.dto.request.QuestionUpdateDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionsDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +26,7 @@ public interface QuestionApi {
 
     @Operation(summary = "QNA 수정")
     @SecurityRequirement(name = "bearer-key")
-    ResponseEntity<QuestionUpdateDto> updateQuestion(Long questionId, QuestionUpdateForm form, Jwt jwt);
+    ResponseEntity<String> updateQuestion(UUID questionId, QuestionUpdateForm form, Jwt jwt);
 
     @Operation(summary = "QNA 단일 조회")
     ResponseEntity<QuestionDetailDto> findQuestion(Long questionId);
