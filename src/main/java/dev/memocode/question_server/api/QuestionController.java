@@ -44,13 +44,13 @@ public class QuestionController implements QuestionApi {
     /**
      * QNA 글 삭제
      */
-    @DeleteMapping("{questionId}")
+    @DeleteMapping("/{questionId}")
     public ResponseEntity<Void> deleteQuestion(@PathVariable UUID questionId, @AuthenticationPrincipal Jwt jwt) {
         QuestionDeleteDto questionDeleteDto = questionDtoMapper.fromQuestionDeleteFormAndAccountId(questionId,
                 UUID.fromString(jwt.getClaim(ACCOUNT_ID_CLAIM_NAME)));
 
         questionUseCase.deleteQuestion(questionDeleteDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
     /**
      * QNA 글 수정
