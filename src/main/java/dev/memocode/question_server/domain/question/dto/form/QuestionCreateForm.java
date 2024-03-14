@@ -23,5 +23,6 @@ public class QuestionCreateForm {
     @Schema(requiredMode = REQUIRED)
     private String content;
 
+    @Builder.Default
     Set<TagCreateDto> tags = new HashSet<>();
 }
