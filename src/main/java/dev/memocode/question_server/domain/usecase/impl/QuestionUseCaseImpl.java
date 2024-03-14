@@ -18,7 +18,6 @@ import java.util.UUID;
 public class QuestionUseCaseImpl implements QuestionUseCase {
 
     private final QuestionService questionService;
-    private final AuthorService authorService;
 
     @Override
     public UUID createQuestion(QuestionCreateDto questionCreateDto) {

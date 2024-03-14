@@ -3,6 +3,7 @@ package dev.memocode.question_server.domain.comment.entity;
 import dev.memocode.question_server.domain.base.base.entity.AggregateRoot;
 import dev.memocode.question_server.domain.external.author.entity.Author;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,5 +35,6 @@ public class Comment extends AggregateRoot {
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment")
+    @Builder.Default
     private List<Comment> childComments = new ArrayList<>();
 }

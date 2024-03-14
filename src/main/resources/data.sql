@@ -46,8 +46,8 @@ CREATE TABLE question_tag
     question_id CHAR(36),
     tag_id     CHAR(36),
     created_at DATETIME            NOT NULL,
-    updated_at DATETIME            NOT NULL
-    FOREIGN KEY (question_id) REFERENCES questions (id),
+    updated_at DATETIME            NOT NULL,
+    FOREIGN KEY (question_id) REFERENCES questions(id),
     FOREIGN KEY (tag_id) REFERENCES tags (id)
 ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

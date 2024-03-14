@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql.mysql:3306/memocode_question_server_dev
+    url: jdbc:mysql://prod-server:32000/memocode_question_server_dev
     username: memocode-dev
     password: memocode-dev
   security:
@@ -17,4 +17,4 @@ logging:
 custom:
   front:
     domain: "http://localhost:5173"
-    domain2: "https://dev.memocode.dev"
+    domain2: "http://localhost:5173"
