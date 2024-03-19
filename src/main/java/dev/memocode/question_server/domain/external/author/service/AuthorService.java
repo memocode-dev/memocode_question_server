@@ -16,7 +16,7 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
 
     public Author findByAccountIdElseThrow(UUID userId) {
-        return authorRepository.findByAccountId(userId)
+        return authorRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ACCOUNT_ID_CLAIM_NAME));
     }
 }

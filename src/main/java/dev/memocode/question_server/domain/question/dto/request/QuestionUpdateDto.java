@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 public class QuestionUpdateDto {
     private UUID questionId;
-    private UUID accountId;
+    private UUID userId;
     private String title;
     private String content;
 }

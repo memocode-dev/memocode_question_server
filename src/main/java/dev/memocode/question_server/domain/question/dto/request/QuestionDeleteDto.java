@@ -14,5 +14,5 @@ import java.util.UUID;
 public class QuestionDeleteDto {
 
     private UUID questionId;
-    private UUID accountId;
+    private UUID userId;
 }

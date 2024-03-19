@@ -4,6 +4,7 @@ import dev.memocode.question_server.domain.external.author.entity.Author;
 import dev.memocode.question_server.domain.external.author.service.AuthorService;
 import dev.memocode.question_server.domain.question.dto.request.QuestionDeleteDto;
 import dev.memocode.question_server.domain.question.dto.request.QuestionUpdateDto;
+import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
 import dev.memocode.question_server.domain.question.entity.Question;
 import dev.memocode.question_server.domain.question.repository.QuestionRepository;
 import dev.memocode.question_server.domain.question.dto.request.QuestionCreateDto;
@@ -11,6 +12,8 @@ import dev.memocode.question_server.domain.question.repository.QuestionRepositor
 import dev.memocode.question_server.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +34,7 @@ public class QuestionService {
     @Transactional
     public Question createQuestion(QuestionCreateDto questionCreateDto) {
 
-        Author author = authorService.findByAccountIdElseThrow(questionCreateDto.getAccountId());
+        Author author = authorService.findByAccountIdElseThrow(questionCreateDto.getUserId());
         Question question = Question.builder()
                 .title(questionCreateDto.getTitle())
                 .content(questionCreateDto.getContent())
@@ -42,18 +45,23 @@ public class QuestionService {
     @Transactional
     public void deleteQuestion(QuestionDeleteDto questionDeleteDto) {
         Question question = findQuestionById(questionDeleteDto.getQuestionId());
-        validateOwner(questionDeleteDto.getAccountId(), question);
+        validateOwner(questionDeleteDto.getUserId(), question);
         question.delete();
     }
     @Transactional
     public UUID updateQuestion(QuestionUpdateDto questionUpdateDto) {
         Question question = findQuestionById(questionUpdateDto.getQuestionId());
-        validateOwner(questionUpdateDto.getAccountId(), question);
+        validateOwner(questionUpdateDto.getUserId(), question);
         question.update(questionUpdateDto.getTitle(), questionUpdateDto.getContent());
         return question.getId();
     }
+
+    public Page<QuestionDetailDto> findAllQuestion(Pageable pageable) {
+        return questionRepositoryCustom.findAllQuestion(pageable);
+    }
+
     private void validateOwner(UUID accountId, Question question) {
-        if (Objects.equals(accountId , question.getAuthor().getAccountId())) return;
+        if (Objects.equals(accountId , question.getAuthor().getId())) return;
         throw new GlobalException(NOT_VALID_QUESTION_OWNER);
     }
 

@@ -2,12 +2,12 @@ package dev.memocode.question_server.api.spec;
 
 import dev.memocode.question_server.domain.question.dto.form.QuestionCreateForm;
 import dev.memocode.question_server.domain.question.dto.form.QuestionUpdateForm;
-import dev.memocode.question_server.domain.question.dto.request.QuestionUpdateDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
-import dev.memocode.question_server.domain.question.dto.response.QuestionsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -32,5 +32,5 @@ public interface QuestionApi {
     ResponseEntity<QuestionDetailDto> findQuestion(Long questionId);
 
     @Operation(summary = "QNA 전체 조회")
-    ResponseEntity<QuestionsDto> findAllQuestion(Jwt jwt, int page, int size);
+    ResponseEntity<Page<QuestionDetailDto>> findAllQuestion(Pageable pageable);
 }

@@ -8,10 +8,12 @@ import dev.memocode.question_server.domain.question.dto.form.QuestionUpdateForm;
 import dev.memocode.question_server.domain.question.dto.request.QuestionCreateDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
 import dev.memocode.question_server.domain.question.dto.request.QuestionUpdateDto;
-import dev.memocode.question_server.domain.question.dto.response.QuestionsDto;
 import dev.memocode.question_server.domain.question.mapper.QuestionDtoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -28,14 +30,14 @@ public class QuestionController implements QuestionApi {
 
     private final QuestionUseCase questionUseCase;
     private final QuestionDtoMapper questionDtoMapper;
-    private static final String ACCOUNT_ID_CLAIM_NAME = "account_id";
+    private static final String ACCOUNT_ID_CLAIM_NAME = "user_id";
 
     /**
      * QNA 글 생성
      */
     @PostMapping
     public ResponseEntity<String> createQuestion(@RequestBody QuestionCreateForm form,@AuthenticationPrincipal Jwt jwt) {
-        QuestionCreateDto questionCreateDto = questionDtoMapper.fromQuestionCreateFormAndAccountId(form,
+        QuestionCreateDto questionCreateDto = questionDtoMapper.fromQuestionCreateFormAndUserId(form,
                 UUID.fromString(jwt.getClaim(ACCOUNT_ID_CLAIM_NAME)));
 
         UUID createdQuestion = questionUseCase.createQuestion(questionCreateDto);
@@ -75,9 +77,8 @@ public class QuestionController implements QuestionApi {
      * QNA 글 전체 조회
      */
     @GetMapping
-    public ResponseEntity<QuestionsDto> findAllQuestion(@AuthenticationPrincipal Jwt jwt,
-                                                        @RequestParam(name = "page", defaultValue = "0") int page,
-                                                        @RequestParam(name = "size", defaultValue = "10") int size) {
-        return null;
+    public ResponseEntity<Page<QuestionDetailDto>> findAllQuestion(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<QuestionDetailDto> allQuestion = questionUseCase.findAllQuestion(pageable);
+        return ResponseEntity.ok().body(allQuestion);
     }
 }

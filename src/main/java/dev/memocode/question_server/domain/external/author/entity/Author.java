@@ -31,7 +31,4 @@ public class Author extends AggregateRoot {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "account_id", unique = true)
-    @JdbcTypeCode(SqlTypes.CHAR)
-    private UUID accountId;
 }
