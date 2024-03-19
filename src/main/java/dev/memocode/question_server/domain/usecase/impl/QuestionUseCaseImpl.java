@@ -30,21 +30,11 @@ public class QuestionUseCaseImpl implements QuestionUseCase {
     private final QuestionService questionService;
     private final AuthorService authorService;
     private final TagService tagService;
-    private final QuestionTagRepository questionTagRepository;
 
     @Override
     public UUID createQuestion(QuestionCreateDto questionCreateDto) {
         Question question = questionService.createQuestion(questionCreateDto);
-        List<Tag> tags = tagService.createTag(questionCreateDto.getTags());
-
-        List<QuestionTag> questionTags = tags.stream()
-                .map(tag -> QuestionTag.builder()
-                        .tag(tag)
-                        .question(question)
-                        .build())
-                .collect(Collectors.toList());
-
-        questionTagRepository.saveAll(questionTags);
+        tagService.createTag(question, questionCreateDto.getTags());
 
         return question.getId();
     }
