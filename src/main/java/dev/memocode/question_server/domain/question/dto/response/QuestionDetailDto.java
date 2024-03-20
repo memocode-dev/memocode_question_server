@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
@@ -15,6 +16,7 @@ import java.time.Instant;
 @Builder
 public class QuestionDetailDto {
 
+    private UUID questionId;
     private String title;
     private String content;
     private Integer affinity;
