@@ -1,13 +1,13 @@
 package dev.memocode.question_server.domain.question.dto.response;
 
 import dev.memocode.question_server.domain.external.author.dto.AuthorDto;
-import dev.memocode.question_server.domain.tag.dto.response.TagsDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,6 +21,6 @@ public class QuestionDetailDto {
     private String content;
     private Integer affinity;
     private Instant createdAt;
-    private TagsDto tags;
+    private List<String> tags;
     private AuthorDto author;
 }
