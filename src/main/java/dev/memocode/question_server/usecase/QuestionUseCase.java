@@ -1,9 +1,10 @@
-package dev.memocode.question_server.domain.usecase;
+package dev.memocode.question_server.usecase;
 
 import dev.memocode.question_server.domain.question.dto.request.QuestionCreateDto;
 import dev.memocode.question_server.domain.question.dto.request.QuestionDeleteDto;
 import dev.memocode.question_server.domain.question.dto.request.QuestionUpdateDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
+import dev.memocode.question_server.domain.question.entity.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +18,7 @@ public interface QuestionUseCase {
 
     UUID updateQuestion(QuestionUpdateDto questionUpdateDto);
 
-    void findQuestionById(UUID questionId);
+    Question findQuestionById(UUID questionId);
 
      Page<QuestionDetailDto> findAllQuestion(Pageable pageable);
 }
