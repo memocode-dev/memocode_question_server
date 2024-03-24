@@ -39,7 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/questions").access(hasScope("write:question"))
                         .requestMatchers(HttpMethod.PATCH,"/questions/**").access(hasScope("write:question"))
                         .requestMatchers(HttpMethod.DELETE,"/questions/**").access(hasScope("write:question"))
-                        .requestMatchers(HttpMethod.GET,"/questions").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/questions/**").permitAll()
                         .anyRequest().denyAll()
                 )
                 .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()));
