@@ -1,6 +1,5 @@
 package dev.memocode.question_server.domain.question.repository.impl;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import dev.memocode.question_server.domain.external.author.dto.AuthorDto;
@@ -9,7 +8,6 @@ import dev.memocode.question_server.domain.question.entity.QQuestion;
 import dev.memocode.question_server.domain.question.entity.Question;
 import dev.memocode.question_server.domain.question.repository.QuestionRepositoryCustom;
 import dev.memocode.question_server.domain.tag.dto.response.QuestionTagDto;
-import dev.memocode.question_server.domain.tag.dto.response.TagsDto;
 import dev.memocode.question_server.domain.tag.entity.QQuestionTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -57,6 +55,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 .selectFrom(QQuestion.question)
                 .join(QQuestion.question.author).fetchJoin()
                 .where(QQuestion.question.deleted.isFalse())
+                .orderBy(QQuestion.question.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -87,7 +86,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 .content(question.getContent())
                 .affinity(question.getAffinity())
                 .createdAt(question.getCreatedAt())
-                .tags(TagsDto.builder().tags(tags).build())
+                .tags(tags)
                 .author(AuthorDto.builder()
                         .authorId(question.getAuthor().getId())
                         .nickname(question.getAuthor().getNickname())

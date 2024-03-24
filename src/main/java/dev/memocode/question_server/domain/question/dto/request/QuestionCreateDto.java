@@ -18,5 +18,6 @@ public class QuestionCreateDto {
     private String title;
     private String content;
     private UUID userId;
+    @Builder.Default
     Set<TagCreateDto> tags = new HashSet<>();
 }
