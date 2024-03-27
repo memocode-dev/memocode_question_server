@@ -1,6 +1,5 @@
 package dev.memocode.question_server.domain.question.repository;
 
-import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
 import dev.memocode.question_server.domain.question.entity.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -7,8 +7,10 @@ import dev.memocode.question_server.domain.question.dto.request.QuestionDeleteDt
 import dev.memocode.question_server.domain.question.dto.request.QuestionUpdateDto;
 import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
 import dev.memocode.question_server.domain.question.entity.Question;
+import dev.memocode.question_server.domain.question.mapper.QuestionMapper;
 import dev.memocode.question_server.domain.question.repository.QuestionRepository;
 import dev.memocode.question_server.domain.question.repository.QuestionRepositoryCustom;
+import dev.memocode.question_server.domain.tag.entity.Tag;
 import dev.memocode.question_server.domain.tag.service.TagService;
 import dev.memocode.question_server.exception.GlobalException;
 import dev.memocode.question_server.usecase.QuestionUseCase;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static dev.memocode.question_server.exception.GlobalErrorCode.NOT_VALID_QUESTION_OWNER;
@@ -35,43 +39,78 @@ public class QuestionService implements QuestionUseCase {
     private final QuestionRepositoryCustom questionRepositoryCustom;
     private final AuthorService authorService;
     private final TagService tagService;
+    private final QuestionMapper questionMapper;
+
     @Transactional
+    @Override
     public UUID createQuestion(QuestionCreateDto questionCreateDto) {
 
         Author author = authorService.findByAccountIdElseThrow(questionCreateDto.getUserId());
+        Set<Tag> tags = tagService.findAllTagOrCreateTagByName(questionCreateDto.getTags());
+
         Question question = Question.builder()
                 .title(questionCreateDto.getTitle())
                 .content(questionCreateDto.getContent())
                 .author(author)
                 .build();
-        tagService.createTag(question, questionCreateDto.getTags());
-        return questionRepository.save(question).getId();
+
+        question.addTags(tags);
+
+        Question savedQuestion = questionRepository.save(question);
+
+        return savedQuestion.getId();
     }
+
     @Transactional
+    @Override
     public void deleteQuestion(QuestionDeleteDto questionDeleteDto) {
-        Question question = findQuestionById(questionDeleteDto.getQuestionId());
-        validateOwner(questionDeleteDto.getUserId(), question);
+        validateQuestionOwner(questionDeleteDto.getUserId(), questionDeleteDto.getQuestionId());
+
+        Question question = findByIdElseThrow(questionDeleteDto.getQuestionId());
+
         question.delete();
     }
+
     @Transactional
+    @Override
     public UUID updateQuestion(QuestionUpdateDto questionUpdateDto) {
-        Question question = findQuestionById(questionUpdateDto.getQuestionId());
-        validateOwner(questionUpdateDto.getUserId(), question);
+        validateQuestionOwner(questionUpdateDto.getUserId(), questionUpdateDto.getQuestionId());
+
+        Question question = findByIdElseThrow(questionUpdateDto.getQuestionId());
+
         question.update(questionUpdateDto.getTitle(), questionUpdateDto.getContent());
         return question.getId();
     }
 
+    @Override
     public Page<QuestionDetailDto> findAllQuestion(Pageable pageable) {
-        return questionRepositoryCustom.findAllQuestion(pageable);
+        Page<Question> questions = questionRepositoryCustom.findAllQuestion(pageable);
+
+        return questionMapper.pageEntities_to_pageDtos(questions);
     }
 
-    private void validateOwner(UUID accountId, Question question) {
-        if (Objects.equals(accountId , question.getAuthor().getId())) return;
-        throw new GlobalException(NOT_VALID_QUESTION_OWNER);
+    @Override
+    public QuestionDetailDto findQuestion(UUID questionId) {
+        Question question = findByIdElseThrow(questionId);
+
+        return questionMapper.entity_to_dto(question);
     }
 
-    public Question findQuestionById(UUID questionId) {
-        return questionRepositoryCustom.findById(questionId)
+    private void validateQuestionOwner(UUID authorId, UUID questionId) {
+
+        Question question = findByIdElseThrow(questionId);
+
+        if (!Objects.equals(authorId , question.getAuthor().getId())) {
+            throw new GlobalException(NOT_VALID_QUESTION_OWNER);
+        }
+    }
+
+    private Optional<Question> findById(UUID questionId) {
+        return questionRepository.findById(questionId);
+    }
+
+    private Question findByIdElseThrow(UUID questionId) {
+        return findById(questionId)
                 .orElseThrow(() -> new GlobalException(QUESTION_NOT_FOUND));
     }
 }
