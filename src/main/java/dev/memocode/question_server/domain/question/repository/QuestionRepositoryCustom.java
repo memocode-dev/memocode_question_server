@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface QuestionRepositoryCustom {
     Optional<Question> findById(UUID id);
 
-    Page<QuestionDetailDto> findAllQuestion(Pageable pageable);
+    Page<Question> findAllQuestion(Pageable pageable);
 }
