@@ -2,18 +2,21 @@ package dev.memocode.question_server.domain.question.entity;
 
 import dev.memocode.question_server.domain.base.base.entity.AggregateRoot;
 import dev.memocode.question_server.domain.external.author.entity.Author;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import dev.memocode.question_server.domain.tag.entity.QuestionTag;
+import dev.memocode.question_server.domain.tag.entity.Tag;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -22,6 +25,7 @@ import static lombok.AccessLevel.PROTECTED;
 @SuperBuilder
 @NoArgsConstructor(access = PROTECTED)
 @Table(name = "questions")
+@SQLRestriction("is_deleted = false")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Question extends AggregateRoot {
 
@@ -37,6 +41,22 @@ public class Question extends AggregateRoot {
 
     @ManyToOne(fetch = LAZY)
     private Author author;
+
+    @OneToMany(mappedBy = "question", cascade = PERSIST, orphanRemoval = true)
+    @Builder.Default
+    private Set<QuestionTag> questionTags = new HashSet<>();
+
+    public void addTags(Set<Tag> tags) {
+        tags.forEach(this::addTag);
+    }
+
+    public void addTag(Tag tag) {
+        QuestionTag questionTag = QuestionTag.builder()
+                .question(this)
+                .tag(tag)
+                .build();
+        this.questionTags.add(questionTag);
+    }
 
     public void delete() {
         this.deleted = true;
