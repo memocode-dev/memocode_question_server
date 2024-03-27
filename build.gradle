@@ -42,8 +42,9 @@ dependencies {
     // p6spy 추가
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
-    // h2
-    runtimeOnly 'com.h2database:h2'
+    // 테스트 컨테이너 추가
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation "org.testcontainers:mysql:1.19.7"
 }
 
 tasks.named('test') {
