@@ -30,7 +30,7 @@ public class QuestionController implements QuestionApi {
 
     private final QuestionUseCase questionUseCase;
     private final QuestionDtoMapper questionDtoMapper;
-    private static final String ACCOUNT_ID_CLAIM_NAME = "user_id";
+    private static final String USER_ID_CLAIM_NAME = "user_id";
 
     /**
      * QNA 글 생성
@@ -38,7 +38,7 @@ public class QuestionController implements QuestionApi {
     @PostMapping
     public ResponseEntity<String> createQuestion(@RequestBody QuestionCreateForm form,@AuthenticationPrincipal Jwt jwt) {
         QuestionCreateDto questionCreateDto = questionDtoMapper.fromQuestionCreateFormAndUserId(form,
-                UUID.fromString(jwt.getClaim(ACCOUNT_ID_CLAIM_NAME)));
+                UUID.fromString(jwt.getClaim(USER_ID_CLAIM_NAME)));
 
         UUID createdQuestion = questionUseCase.createQuestion(questionCreateDto);
         return ResponseEntity.created(URI.create(createdQuestion.toString())).body(createdQuestion.toString());
@@ -49,7 +49,7 @@ public class QuestionController implements QuestionApi {
     @DeleteMapping("/{questionId}")
     public ResponseEntity<Void> deleteQuestion(@PathVariable UUID questionId, @AuthenticationPrincipal Jwt jwt) {
         QuestionDeleteDto questionDeleteDto = questionDtoMapper.fromQuestionDeleteFormAndAccountId(questionId,
-                UUID.fromString(jwt.getClaim(ACCOUNT_ID_CLAIM_NAME)));
+                UUID.fromString(jwt.getClaim(USER_ID_CLAIM_NAME)));
 
         questionUseCase.deleteQuestion(questionDeleteDto);
         return ResponseEntity.noContent().build();
@@ -61,7 +61,7 @@ public class QuestionController implements QuestionApi {
     public ResponseEntity<String> updateQuestion(@PathVariable UUID questionId, @RequestBody QuestionUpdateForm form, @AuthenticationPrincipal Jwt jwt) {
         QuestionUpdateDto questionUpdateDto = questionDtoMapper.fromQuestionUpdateFormAndAccountId(questionId,
                 form,
-                UUID.fromString(jwt.getClaim(ACCOUNT_ID_CLAIM_NAME)));
+                UUID.fromString(jwt.getClaim(USER_ID_CLAIM_NAME)));
 
         UUID updatedQuestion = questionUseCase.updateQuestion(questionUpdateDto);
         return ResponseEntity.ok().body(updatedQuestion.toString());
@@ -70,8 +70,10 @@ public class QuestionController implements QuestionApi {
      * QNA 글 단일 조회
      */
     @GetMapping("/{questionId}")
-    public ResponseEntity<QuestionDetailDto> findQuestion(@PathVariable Long questionId) {
-        return null;
+    public ResponseEntity<QuestionDetailDto> findQuestion(@PathVariable UUID questionId) {
+        QuestionDetailDto questionDetailDto = questionUseCase.findQuestion(questionId);
+
+        return ResponseEntity.ok().body(questionDetailDto);
     }
     /**
      * QNA 글 전체 조회
