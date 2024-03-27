@@ -1,22 +1,18 @@
 package dev.memocode.question_server.domain.question.repository.impl;
 
-import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import dev.memocode.question_server.domain.external.author.dto.AuthorDto;
-import dev.memocode.question_server.domain.question.dto.response.QuestionDetailDto;
-import dev.memocode.question_server.domain.question.entity.QQuestion;
 import dev.memocode.question_server.domain.question.entity.Question;
 import dev.memocode.question_server.domain.question.repository.QuestionRepositoryCustom;
-import dev.memocode.question_server.domain.tag.dto.response.QuestionTagDto;
-import dev.memocode.question_server.domain.tag.entity.QQuestionTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static dev.memocode.question_server.domain.question.entity.QQuestion.question;
 
