@@ -37,70 +37,19 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 
 
     @Override
-    public Page<QuestionDetailDto> findAllQuestion(Pageable pageable) {
-        List<Question> questions = fetchQuestionsWithAuthorInfo(pageable);
-        Map<UUID, List<String>> questionTagsMap = fetchTagNamesForQuestions(questions);
+    public Page<Question> findAllQuestion(Pageable pageable) {
 
-        List<QuestionDetailDto> dtos = questions.stream()
-                .map(question -> toQuestionDetailDto(question, questionTagsMap))
-                .collect(Collectors.toList());
-
-        long total = fetchTotalQuestionCount();
-
-        return new PageImpl<>(dtos, pageable, total);
-    }
-
-    private List<Question> fetchQuestionsWithAuthorInfo(Pageable pageable) {
-        return queryFactory
-                .selectFrom(QQuestion.question)
-                .join(QQuestion.question.author).fetchJoin()
-                .where(QQuestion.question.deleted.isFalse())
-                .orderBy(QQuestion.question.createdAt.desc())
+        List<Question> content = queryFactory
+                .selectFrom(question)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
-    }
-
-    private Map<UUID, List<String>> fetchTagNamesForQuestions(List<Question> questions) {
-        List<QuestionTagDto> tagDtos = queryFactory
-                .select(Projections.constructor(QuestionTagDto.class,
-                        QQuestionTag.questionTag.question.id,
-                        QQuestionTag.questionTag.tag.name))
-                .from(QQuestionTag.questionTag)
-                .join(QQuestionTag.questionTag.tag)
-                .where(QQuestionTag.questionTag.question.id.in(questions.stream().map(Question::getId).collect(Collectors.toList())))
+                .orderBy(question.createdAt.desc())
                 .fetch();
 
-        return tagDtos.stream()
-                .collect(Collectors.groupingBy(
-                        QuestionTagDto::getQuestionId,
-                        Collectors.mapping(QuestionTagDto::getTagName, Collectors.toList())
-                ));
-    }
+        JPAQuery<Long> countQuery = queryFactory
+                .select(question.count())
+                .from(question);
 
-    private QuestionDetailDto toQuestionDetailDto(Question question, Map<UUID, List<String>> questionTagsMap) {
-        List<String> tags = questionTagsMap.getOrDefault(question.getId(), Collections.emptyList());
-        return QuestionDetailDto.builder()
-                .questionId(question.getId())
-                .title(question.getTitle())
-                .content(question.getContent())
-                .affinity(question.getAffinity())
-                .createdAt(question.getCreatedAt())
-                .tags(tags)
-                .author(AuthorDto.builder()
-                        .authorId(question.getAuthor().getId())
-                        .nickname(question.getAuthor().getNickname())
-                        .build())
-                .build();
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
-
-    private long fetchTotalQuestionCount() {
-        return Optional.ofNullable(queryFactory
-                        .select(QQuestion.question.count())
-                        .from(QQuestion.question)
-                        .where(QQuestion.question.deleted.isFalse())
-                        .fetchOne())
-                .orElse(0L);
-    }
-
 }
