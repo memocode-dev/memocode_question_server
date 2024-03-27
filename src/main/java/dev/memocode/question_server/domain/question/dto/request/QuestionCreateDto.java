@@ -15,9 +15,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionCreateDto {
+    @NotNull
     private String title;
+    @NotNull
     private String content;
+    @NotNull
     private UUID userId;
     @Builder.Default
-    Set<TagCreateDto> tags = new HashSet<>();
+    Set<String> tags = new HashSet<>();
 }
