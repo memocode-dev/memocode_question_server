@@ -23,5 +23,5 @@ public class QuestionCreateForm {
     private String content;
 
     @Builder.Default
-    Set<TagCreateDto> tags = new HashSet<>();
+    Set<String> tags = new HashSet<>();
 }
