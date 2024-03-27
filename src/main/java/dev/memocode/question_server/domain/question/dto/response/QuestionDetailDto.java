@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 public class QuestionDetailDto {
 
-    private UUID questionId;
+    private UUID id;
     private String title;
     private String content;
     private Integer affinity;
