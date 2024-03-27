@@ -1,20 +1,18 @@
 package dev.memocode.question_server.domain.tag.service;
 
-import dev.memocode.question_server.domain.question.entity.Question;
-import dev.memocode.question_server.domain.tag.dto.request.TagCreateDto;
-import dev.memocode.question_server.domain.tag.entity.QuestionTag;
 import dev.memocode.question_server.domain.tag.entity.Tag;
-import dev.memocode.question_server.domain.tag.repository.QuestionTagRepository;
 import dev.memocode.question_server.domain.tag.repository.TagRepository;
+import dev.memocode.question_server.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
+import static dev.memocode.question_server.exception.GlobalErrorCode.TAG_ALREADY_EXISTS;
 
 @RequiredArgsConstructor
 @Service
