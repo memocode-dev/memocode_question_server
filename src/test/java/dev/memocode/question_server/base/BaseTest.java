@@ -59,7 +59,7 @@ public abstract class BaseTest {
     @Autowired
     private AuthorRepository authorRepository;
 
-    protected Author author;
+    protected Author author1;
 
     @BeforeEach
     void beforeEach() {
