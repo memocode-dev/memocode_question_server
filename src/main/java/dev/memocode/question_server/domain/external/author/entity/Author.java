@@ -9,15 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
-import java.util.UUID;
 
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@Immutable
 @Entity
 @SuperBuilder
 @NoArgsConstructor(access = PROTECTED)

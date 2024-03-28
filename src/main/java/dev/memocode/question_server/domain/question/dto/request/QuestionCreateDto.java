@@ -1,6 +1,6 @@
 package dev.memocode.question_server.domain.question.dto.request;
 
-import dev.memocode.question_server.domain.tag.dto.request.TagCreateDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +15,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionCreateDto {
+    @NotNull
     private String title;
+    @NotNull
     private String content;
+    @NotNull
     private UUID userId;
-    Set<TagCreateDto> tags = new HashSet<>();
+    @Builder.Default
+    Set<String> tags = new HashSet<>();
 }

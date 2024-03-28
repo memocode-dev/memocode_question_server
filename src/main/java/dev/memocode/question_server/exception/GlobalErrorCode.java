@@ -16,7 +16,10 @@ public enum GlobalErrorCode {
 
     // Question 관련 에러코드
     NOT_VALID_QUESTION_OWNER(FORBIDDEN, 403, "본인의 질문만 수정/삭제 가능합니다.", INFO),
-    QUESTION_NOT_FOUND(NOT_FOUND, 404, "해당글이 존재하지 않습니다.", INFO);
+    QUESTION_NOT_FOUND(NOT_FOUND, 404, "해당글이 존재하지 않습니다.", INFO),
+
+    TAG_ALREADY_EXISTS(NOT_FOUND, 404, "태그가 이미 존재합니다.", CRITICAL),
+    TAG_NOT_FOUND(NOT_FOUND, 404, "태그가 존재하지 않습니다.", CRITICAL);
 
     private final HttpStatus status;
     private final int code;

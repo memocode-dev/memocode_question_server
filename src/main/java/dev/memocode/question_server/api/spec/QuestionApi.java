@@ -29,7 +29,7 @@ public interface QuestionApi {
     ResponseEntity<String> updateQuestion(UUID questionId, QuestionUpdateForm form, Jwt jwt);
 
     @Operation(summary = "QNA 단일 조회")
-    ResponseEntity<QuestionDetailDto> findQuestion(Long questionId);
+    ResponseEntity<QuestionDetailDto> findQuestion(UUID questionId);
 
     @Operation(summary = "QNA 전체 조회")
     ResponseEntity<Page<QuestionDetailDto>> findAllQuestion(Pageable pageable);

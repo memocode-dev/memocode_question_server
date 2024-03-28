@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 public class AuthorDto {
 
+    private UUID id;
     private String username;
     private String nickname;
-    private UUID authorId;
 }
