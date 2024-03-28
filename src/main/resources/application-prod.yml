@@ -10,7 +10,7 @@ spring:
 
 logging:
   level:
-    org.springframework.transaction.interceptor: TRACE
+    org.springframework.transaction.interceptor: INFO
 
 custom:
   front:

@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,7 +24,7 @@ import java.time.Instant;
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Sql(value = "/data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class BaseTest {
+public abstract class BaseTest {
 
     protected final static String MYSQL_DATABASE = "testdb";
     protected final static String MYSQL_USERNAME = "test";
@@ -64,7 +65,7 @@ public class BaseTest {
     void beforeEach() {
 
         // 유저 생성
-        this.author = Author.builder()
+        Author author = Author.builder()
                 .username("테스트이름")
                 .nickname("테스트닉네임")
                 .createdAt(Instant.now())
@@ -72,6 +73,7 @@ public class BaseTest {
                 .deleted(false)
                 .deletedAt(null)
                 .build();
-        authorRepository.save(this.author);
+
+        author1 = authorRepository.save(author);
     }
 }

@@ -22,9 +22,6 @@ import static dev.memocode.question_server.support.TestConstructorFactory.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@Transactional
 class QuestionUseCaseTest extends BaseTest {
 
     @Autowired
@@ -36,7 +33,7 @@ class QuestionUseCaseTest extends BaseTest {
         //given
         Set<String> tags = Set.of("tag1", "tag2");
 
-        QuestionCreateDto questionCreateDto = createQuestionCreateDto("created_title", "created_content", author.getId(), tags);
+        QuestionCreateDto questionCreateDto = createQuestionCreateDto("created_title", "created_content", author1.getId(), tags);
 
         //when
         UUID created_question_id = questionUseCase.createQuestion(questionCreateDto);
@@ -54,11 +51,11 @@ class QuestionUseCaseTest extends BaseTest {
         //given
         Set<String> tags = Set.of("tag1", "tag2");
 
-        QuestionCreateDto questionCreateDto = createQuestionCreateDto("title", "content", author.getId(), tags);
+        QuestionCreateDto questionCreateDto = createQuestionCreateDto("title", "content", author1.getId(), tags);
 
         UUID questionId = questionUseCase.createQuestion(questionCreateDto);
 
-        QuestionUpdateDto questionUpdateDto = createQuestionUpdateDto(questionId, "updated_title", "updated_content", author.getId());
+        QuestionUpdateDto questionUpdateDto = createQuestionUpdateDto(questionId, "updated_title", "updated_content", author1.getId());
         //when
         UUID updated_question_id = questionUseCase.updateQuestion(questionUpdateDto);
 
@@ -69,19 +66,18 @@ class QuestionUseCaseTest extends BaseTest {
                 .containsExactly("updated_title", "updated_content");
     }
 
+    // 트랜잭션 시작 (영속성 컨텍스트 살아있다)
     @DisplayName("질문 삭제 테스트")
     @Test
     void deleteQuestion() {
         //given
         Set<String> tags = Set.of("tag1", "tag2");
 
-        QuestionCreateDto questionCreateDto = createQuestionCreateDto("title", "content", author.getId(), tags);
+        QuestionCreateDto questionCreateDto = createQuestionCreateDto("title", "content", author1.getId(), tags);
 
         UUID questionId = questionUseCase.createQuestion(questionCreateDto);
+        QuestionDeleteDto questionDeleteDto = createQuestionDeleteDto(questionId, author1.getId());
 
-        QuestionDeleteDto questionDeleteDto = createQuestionDeleteDto(questionId, author.getId());
-
-        //when
         questionUseCase.deleteQuestion(questionDeleteDto);
 
         //then
@@ -89,6 +85,7 @@ class QuestionUseCaseTest extends BaseTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("해당글이 존재하지 않습니다.");
     }
+    // 트랜잭션 끝
 
     @DisplayName("질문 단일 조회 테스트")
     @Test
@@ -96,7 +93,7 @@ class QuestionUseCaseTest extends BaseTest {
         //given
         Set<String> tags = Set.of("tag1", "tag2");
 
-        QuestionCreateDto questionCreateDto = createQuestionCreateDto("title", "content", author.getId(), tags);
+        QuestionCreateDto questionCreateDto = createQuestionCreateDto("title", "content", author1.getId(), tags);
 
         UUID questionId = questionUseCase.createQuestion(questionCreateDto);
 
@@ -115,7 +112,7 @@ class QuestionUseCaseTest extends BaseTest {
     void findAllQuestion() {
         //given
         IntStream.range(0, 20).forEach(i -> {
-            QuestionCreateDto questionCreateDto = createQuestionCreateDto("title" + i, "content" + i, author.getId(),Set.of("tag" + i));
+            QuestionCreateDto questionCreateDto = createQuestionCreateDto("title" + i, "content" + i, author1.getId(),Set.of("tag" + i));
             questionUseCase.createQuestion(questionCreateDto);
         });
 

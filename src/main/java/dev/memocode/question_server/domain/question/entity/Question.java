@@ -44,9 +44,10 @@ public class Question extends AggregateRoot {
 
     @OneToMany(mappedBy = "question", cascade = PERSIST, orphanRemoval = true)
     @Builder.Default
-    private Set<QuestionTag> questionTags = new HashSet<>();
+    private Set<QuestionTag> questionTags = new HashSet<>(); // 1, 2, 3, 4, 5
+    // 1, 2, 3, 4, 5
 
-    public void addTags(Set<Tag> tags) {
+    public void addTags(Set<Tag> tags) { // 1, 2, 3, 4, 5
         tags.forEach(this::addTag);
     }
 
