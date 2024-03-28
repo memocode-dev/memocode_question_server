@@ -13,7 +13,6 @@ import org.hibernate.annotations.Immutable;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@Immutable
 @Entity
 @SuperBuilder
 @NoArgsConstructor(access = PROTECTED)
